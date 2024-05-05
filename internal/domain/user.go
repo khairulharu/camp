@@ -6,6 +6,6 @@ type User struct {
 }
 
 type UserRepository interface {
-	FindByID() User
-	FindByUsername(username string) User
+	FindByID(userID int64) *User
+	FindByUsername(username string) *User
 }
