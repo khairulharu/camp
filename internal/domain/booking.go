@@ -2,6 +2,7 @@ package domain
 
 import (
 	"campsite/internal/dto"
+	"context"
 	"time"
 
 	"gorm.io/gorm"
@@ -21,6 +22,17 @@ type Booking struct {
 	DeletedAt      gorm.DeletedAt `gorm:"type:datetime(3)"`
 }
 
+type BookingRepository interface {
+	FindByID(ctx context.Context, id int64) (Campsite, error)
+	GetAll(ctx context.Context) ([]Campsite, error)
+	Insert(ctx context.Context, user *Campsite) error
+	Update(ctx context.Context, user *Campsite) error
+}
+
 type BookingService interface {
-	Camp(campID int64) dto.Response
+	AddReview(request dto.BookingRequest) dto.Response
+	GetAllReviews() dto.Response
+	GetReview() dto.Response
+	UpdateReview(request dto.BookingRequest) dto.Response
+	DeleteReview(request dto.BookingRequest) dto.Response
 }

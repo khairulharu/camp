@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"campsite/internal/dto"
+	"context"
 	"time"
 
 	"gorm.io/gorm"
@@ -19,11 +21,17 @@ type Campsite struct {
 	DeletedAt     gorm.DeletedAt `gorm:"type:datetime(3)"`
 }
 
-type CampRepository interface {
-	FindByID(campID int64) *Campsite
-	FindByName(name string) *Campsite
-	GetAll() *[]Campsite
+type CampsiteRepository interface {
+	FindByID(ctx context.Context, id int64) (Campsite, error)
+	GetAll(ctx context.Context) ([]Campsite, error)
+	Insert(ctx context.Context, user *Campsite) error
+	Update(ctx context.Context, user *Campsite) error
 }
 
-type CampService interface {
+type CampsiteService interface {
+	AddReview(request dto.CampsiteRequest) dto.Response
+	GetAllReviews() dto.Response
+	GetReview() dto.Response
+	UpdateReview(request dto.CampsiteRequest) dto.Response
+	DeleteReview(request dto.CampsiteRequest) dto.Response
 }

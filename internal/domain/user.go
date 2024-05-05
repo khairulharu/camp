@@ -1,6 +1,8 @@
 package domain
 
 import (
+	"campsite/internal/dto"
+	"context"
 	"time"
 
 	"gorm.io/gorm"
@@ -19,6 +21,14 @@ type User struct {
 }
 
 type UserRepository interface {
-	FindByID(userID int64) *User
-	FindByUsername(username string) *User
+	GetAll(ctx context.Context) ([]User, error)
+	Insert(ctx context.Context, user *User) error
+	FindByID(ctx context.Context, userID int64) (User, error)
+	FindByUsername(ctx context.Context, username string) (User, error)
+	UpdateUser(ctx context.Context, userID int64, updates map[string]interface{}) error
+}
+
+type UserService interface {
+	GetUser() dto.Response
+	UpdateUser(request dto.UserRequest) dto.Response
 }
