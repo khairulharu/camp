@@ -13,4 +13,5 @@ func main() {
 	dbConnection := database.NewMySqlConnection(config)
 
 	_ = repository.NewUserRepository(dbConnection)
+
 }

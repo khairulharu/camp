@@ -3,6 +3,7 @@ package config
 type Config struct {
 	SRV Server
 	DB  Database
+	JWT SecretKey
 }
 
 type Server struct {
@@ -16,4 +17,8 @@ type Database struct {
 	User     string
 	Password string
 	Name     string
+}
+
+type SecretKey struct {
+	Key string
 }

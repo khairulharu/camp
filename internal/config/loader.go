@@ -24,5 +24,8 @@ func Get() *Config {
 			Password: os.Getenv("DB_PASSWORD"),
 			Name:     os.Getenv("DB_NAME"),
 		},
+		JWT: SecretKey{
+			Key: os.Getenv("JWT_SECRET_KEY"),
+		},
 	}
 }

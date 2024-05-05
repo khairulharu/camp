@@ -24,14 +24,14 @@ type Campsite struct {
 type CampsiteRepository interface {
 	FindByID(ctx context.Context, id int64) (Campsite, error)
 	GetAll(ctx context.Context) ([]Campsite, error)
-	Insert(ctx context.Context, user *Campsite) error
-	Update(ctx context.Context, user *Campsite) error
+	Insert(ctx context.Context, campsite *Campsite) error
+	Update(ctx context.Context, campsite *Campsite) error
 }
 
 type CampsiteService interface {
-	AddReview(request dto.CampsiteRequest) dto.Response
-	GetAllReviews() dto.Response
-	GetReview() dto.Response
-	UpdateReview(request dto.CampsiteRequest) dto.Response
-	DeleteReview(request dto.CampsiteRequest) dto.Response
+	AddCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
+	GetAllCampsites() dto.Response
+	GetCampsite(ctx context.Context, id int64) dto.Response
+	UpdateCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
+	DeleteCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
 }

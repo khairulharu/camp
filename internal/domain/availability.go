@@ -15,6 +15,6 @@ type Availability struct {
 type AvailabilityRepository interface {
 	FindByID(ctx context.Context, id int64) (Availability, error)
 	GetAll(ctx context.Context) ([]Availability, error)
-	Insert(ctx context.Context, user *Availability) error
-	Update(ctx context.Context, user *Availability) error
+	Insert(ctx context.Context, availability *Availability) error
+	Update(ctx context.Context, availability *Availability) error
 }

@@ -25,10 +25,10 @@ type UserRepository interface {
 	Insert(ctx context.Context, user *User) error
 	FindByID(ctx context.Context, userID int64) (User, error)
 	FindByUsername(ctx context.Context, username string) (User, error)
-	UpdateUser(ctx context.Context, userID int64, updates map[string]interface{}) error
+	UpdateUser(ctx context.Context, user *User) error
 }
 
 type UserService interface {
-	GetUser() dto.Response
-	UpdateUser(request dto.UserRequest) dto.Response
+	GetUser(ctx context.Context, id int64) dto.Response
+	UpdateUser(ctx context.Context, request dto.UserRequest) dto.Response
 }

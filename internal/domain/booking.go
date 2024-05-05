@@ -23,16 +23,16 @@ type Booking struct {
 }
 
 type BookingRepository interface {
-	FindByID(ctx context.Context, id int64) (Campsite, error)
-	GetAll(ctx context.Context) ([]Campsite, error)
-	Insert(ctx context.Context, user *Campsite) error
-	Update(ctx context.Context, user *Campsite) error
+	FindByID(ctx context.Context, id int64) (Booking, error)
+	GetAll(ctx context.Context) ([]Booking, error)
+	Insert(ctx context.Context, booking *Booking) error
+	Update(ctx context.Context, booking *Booking) error
 }
 
 type BookingService interface {
-	AddReview(request dto.BookingRequest) dto.Response
-	GetAllReviews() dto.Response
-	GetReview() dto.Response
-	UpdateReview(request dto.BookingRequest) dto.Response
-	DeleteReview(request dto.BookingRequest) dto.Response
+	AddBooking(ctx context.Context, request dto.BookingRequest) dto.Response
+	GetAllBookings(ctx context.Context) dto.Response
+	GetBooking(ctx context.Context) dto.Response
+	UpdateBooking(ctx context.Context, request dto.BookingRequest) dto.Response
+	DeleteBooking(ctx context.Context, request dto.BookingRequest) dto.Response
 }
