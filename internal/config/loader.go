@@ -1,17 +1,28 @@
 package config
 
+import (
+	"log"
+	"os"
+
+	"github.com/joho/godotenv"
+)
+
 func Get() *Config {
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	return &Config{
 		SRV: Server{
-			Host: "localhost",
-			Port: "8080",
+			Host: os.Getenv("SRV_HOST"),
+			Port: os.Getenv("SRV_PORT"),
 		},
 		DB: Database{
-			Host:     "localhost",
-			Port:     3630,
-			User:     "mysql",
-			Password: "mysql",
-			Name:     "campsite",
+			Host:     os.Getenv("DB_HOST"),
+			Port:     os.Getenv("DB_PORT"),
+			User:     os.Getenv("DB_USER"),
+			Password: os.Getenv("DB_PASSWORD"),
+			Name:     os.Getenv("DB_NAME"),
 		},
 	}
 }

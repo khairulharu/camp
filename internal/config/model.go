@@ -12,7 +12,7 @@ type Server struct {
 
 type Database struct {
 	Host     string
-	Port     int64
+	Port     string
 	User     string
 	Password string
 	Name     string
