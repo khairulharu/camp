@@ -4,13 +4,14 @@ import (
 	"campsite/internal/domain"
 	"campsite/internal/dto"
 	"context"
+	"time"
 )
 
 type campsiteService struct {
-	campsiteRepository *domain.CampsiteRepository
+	campsiteRepository domain.CampsiteRepository
 }
 
-func NewCampsite(campsiteRepository *domain.CampsiteRepository) domain.CampsiteService {
+func NewCampsite(campsiteRepository domain.CampsiteRepository) domain.CampsiteService {
 	return &campsiteService{
 		campsiteRepository: campsiteRepository,
 	}
@@ -18,12 +19,44 @@ func NewCampsite(campsiteRepository *domain.CampsiteRepository) domain.CampsiteS
 
 // AddCampsite implements domain.CampsiteService.
 func (c *campsiteService) AddCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response {
-	panic("unimplemented")
+	campsite := domain.Campsite{
+		Name:          request.Name,
+		Location:      request.Location,
+		Latitude:      request.Latitude,
+		Longitude:     request.Longitude,
+		Area:          request.Area,
+		PricePerNight: request.PricePerNight,
+		CreatedAt:     time.Now(),
+	}
+
+	if err := c.campsiteRepository.Insert(ctx, &campsite); err != nil {
+		return dto.Response{
+			Status:  "401",
+			Message: "failed add review",
+			Error:   err.Error(),
+		}
+	}
+
+	return dto.Response{
+		Status:  "200",
+		Message: "accepted",
+	}
 }
 
 // DeleteCampsite implements domain.CampsiteService.
 func (c *campsiteService) DeleteCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response {
-	panic("unimplemented")
+	err := c.campsiteRepository.Delete(ctx, &domain.Campsite{ID: request.ID})
+
+	if err != nil {
+		return dto.Response{
+			Status: "",
+		}
+	}
+
+	return dto.Response{
+		Status:  "200",
+		Message: "accepted",
+	}
 }
 
 // GetAllCampsites implements domain.CampsiteService.

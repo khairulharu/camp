@@ -26,6 +26,7 @@ type CampsiteRepository interface {
 	GetAll(ctx context.Context) ([]Campsite, error)
 	Insert(ctx context.Context, campsite *Campsite) error
 	Update(ctx context.Context, campsite *Campsite) error
+	Delete(ctx context.Context, campsite *Campsite) error
 }
 
 type CampsiteService interface {

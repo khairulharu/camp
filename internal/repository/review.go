@@ -46,3 +46,8 @@ func (r *riviewRepository) Insert(ctx context.Context, review *domain.Review) er
 func (r *riviewRepository) Update(ctx context.Context, review *domain.Review) error {
 	return r.db.WithContext(ctx).Table("reviews").Model(&domain.Review{}).Where("id = ?", review.ID).Updates(&review).Error
 }
+
+// Delete implements domain.ReviewRepository.
+func (r *riviewRepository) Delete(ctx context.Context, review *domain.Review) error {
+	return r.db.WithContext(ctx).Table("reviews").Delete(&review).Error
+}

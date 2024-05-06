@@ -5,8 +5,6 @@ import (
 	"campsite/internal/dto"
 	"context"
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type reviewService struct {
@@ -46,10 +44,8 @@ func (r *reviewService) AddReview(ctx context.Context, request dto.ReviewRequest
 
 // DeleteReview implements domain.ReviewService.
 func (r *reviewService) DeleteReview(ctx context.Context, request dto.ReviewRequest) dto.Response {
-	err := r.reviewRepository.Update(ctx, &domain.Review{
-		ID:        request.ID,
-		DeletedAt: gorm.DeletedAt{},
-	})
+
+	err := r.reviewRepository.Delete(ctx, &domain.Review{ID: request.ID})
 
 	if err != nil {
 		return dto.Response{

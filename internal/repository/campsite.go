@@ -46,3 +46,8 @@ func (c *campsiteRepository) Insert(ctx context.Context, campsite *domain.Campsi
 func (c *campsiteRepository) Update(ctx context.Context, campsite *domain.Campsite) error {
 	return c.db.WithContext(ctx).Table("campsites").Model(&domain.Campsite{}).Where("id = ?", campsite.ID).Updates(&campsite).Error
 }
+
+// Delete implements domain.CampsiteRepository.
+func (c *campsiteRepository) Delete(ctx context.Context, campsite *domain.Campsite) error {
+	return c.db.WithContext(ctx).Table("campsites").Delete(&campsite).Error
+}

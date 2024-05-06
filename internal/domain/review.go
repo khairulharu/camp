@@ -25,6 +25,7 @@ type ReviewRepository interface {
 	GetAll(ctx context.Context) ([]Review, error)
 	Insert(ctx context.Context, review *Review) error
 	Update(ctx context.Context, review *Review) error
+	Delete(ctx context.Context, review *Review) error
 }
 
 type ReviewService interface {
