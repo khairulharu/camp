@@ -8,5 +8,5 @@ type ReviewRequest struct {
 	UserID     int64     `json:"user_id"`
 	Rating     int8      `json:"rating"`
 	Comment    string    `json:"comment"`
-	RiviewDate time.Time `json:"riview_date"`
+	ReviewDate time.Time `json:"riview_date"`
 }

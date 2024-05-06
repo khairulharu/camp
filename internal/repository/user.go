@@ -52,6 +52,6 @@ func (u *userRepository) Insert(ctx context.Context, user *domain.User) error {
 }
 
 // UpdateUser implements domain.UserRepository.
-func (u *userRepository) UpdateUser(ctx context.Context, user *domain.User) error {
+func (u *userRepository) Update(ctx context.Context, user *domain.User) error {
 	return u.db.WithContext(ctx).Table("users").Model(&domain.User{}).Where("id = ?", user.ID).Updates(&user).Error
 }

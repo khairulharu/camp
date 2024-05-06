@@ -4,13 +4,14 @@ import (
 	"campsite/internal/domain"
 	"campsite/internal/dto"
 	"context"
+	"time"
 )
 
 type userService struct {
-	userRepository *domain.UserRepository
+	userRepository domain.UserRepository
 }
 
-func NewUser(userRepository *domain.UserRepository) domain.UserService {
+func NewUser(userRepository domain.UserRepository) domain.UserService {
 	return &userService{
 		userRepository: userRepository,
 	}
@@ -18,10 +19,52 @@ func NewUser(userRepository *domain.UserRepository) domain.UserService {
 
 // GetUser implements domain.UserService.
 func (u *userService) GetUser(ctx context.Context, id int64) dto.Response {
-	panic("not implementde")
+	user, err := u.userRepository.FindByID(ctx, id)
+
+	if err != nil {
+		return dto.Response{
+			Status:  "401",
+			Message: "not found",
+			Error:   err.Error(),
+		}
+	}
+
+	return dto.Response{
+		Status:  "200",
+		Message: "accepted",
+		Data: dto.UserResponse{
+			ID:          user.ID,
+			Name:        user.Name,
+			Email:       user.Email,
+			Password:    user.Password,
+			PhoneNumber: user.PhoneNumber,
+			Address:     user.Address,
+		},
+	}
 }
 
 // UpdateUser implements domain.UserService.
 func (u *userService) UpdateUser(ctx context.Context, request dto.UserRequest) dto.Response {
-	panic("unimplemented")
+	user := domain.User{
+		ID:          request.ID,
+		Name:        request.Name,
+		Email:       request.Email,
+		Password:    request.Password,
+		PhoneNumber: request.PhoneNumber,
+		Address:     request.Address,
+		UpdatedAt:   time.Now(),
+	}
+
+	if err := u.userRepository.Update(ctx, &user); err != nil {
+		return dto.Response{
+			Status:  "401",
+			Message: "failed update",
+			Error:   err.Error(),
+		}
+	}
+
+	return dto.Response{
+		Status:  "200",
+		Message: "user updated",
+	}
 }

@@ -10,7 +10,7 @@ package auth
 // 	"github.com/labstack/echo/v4/middleware"
 // )
 
-// // JWT Secret Key
+// JWT Secret Key
 // var jwtSecret = []byte("campsite")
 
 // // User struct
