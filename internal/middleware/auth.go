@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"campsite/util"
+	"campsite/internal/util"
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
