@@ -31,7 +31,7 @@ type CampsiteRepository interface {
 
 type CampsiteService interface {
 	AddCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
-	GetAllCampsites() dto.Response
+	GetAllCampsites(ctx context.Context) dto.Response
 	GetCampsite(ctx context.Context, id int64) dto.Response
 	UpdateCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
 	DeleteCampsite(ctx context.Context, request dto.CampsiteRequest) dto.Response
