@@ -20,7 +20,7 @@ func NewFacilityRepository(db *gorm.DB) domain.FacilityRepository {
 // FindByID implements domain.ReviewRepository.
 func (f *facilityRepository) FindByID(ctx context.Context, id int64) (domain.Facility, error) {
 	var facility domain.Facility
-	err := f.db.WithContext(ctx).Table("facilities").Where("id = ?", id).First(facility).Error
+	err := f.db.WithContext(ctx).Table("facilities").Where("id = ?", &id).First(&facility).Error
 	if err != nil {
 		return domain.Facility{}, err
 	}
@@ -39,10 +39,10 @@ func (f *facilityRepository) GetAll(ctx context.Context) ([]domain.Facility, err
 
 // Insert implements domain.facilityRepository.
 func (f *facilityRepository) Insert(ctx context.Context, facility *domain.Facility) error {
-	return f.db.WithContext(ctx).Table("facilities").Create(facility).Error
+	return f.db.WithContext(ctx).Table("facilities").Create(&facility).Error
 }
 
 // Update implements domain.facilityRepository.
 func (f *facilityRepository) Update(ctx context.Context, facility *domain.Facility) error {
-	return f.db.WithContext(ctx).Table("facilities").Model(&domain.Facility{}).Where("id = ?", facility.ID).Updates(&facility).Error
+	return f.db.WithContext(ctx).Table("facilities").Model(&domain.Facility{}).Where("id = ?", &facility.ID).Updates(&facility).Error
 }

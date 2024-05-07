@@ -20,7 +20,7 @@ func NewBookingRepository(db *gorm.DB) domain.BookingRepository {
 // FindByID implements domain.ReviewRepository.
 func (b *bookingRepository) FindByID(ctx context.Context, id int64) (domain.Booking, error) {
 	var booking domain.Booking
-	err := b.db.WithContext(ctx).Table("bookings").Where("id = ?", id).First(booking).Error
+	err := b.db.WithContext(ctx).Table("bookings").Where("id = ?", &id).First(&booking).Error
 	if err != nil {
 		return domain.Booking{}, err
 	}
@@ -39,10 +39,15 @@ func (b *bookingRepository) GetAll(ctx context.Context) ([]domain.Booking, error
 
 // Insert implements domain.bookingRepository.
 func (b *bookingRepository) Insert(ctx context.Context, booking *domain.Booking) error {
-	return b.db.WithContext(ctx).Table("bookings").Create(booking).Error
+	return b.db.WithContext(ctx).Table("bookings").Create(&booking).Error
 }
 
 // Update implements domain.bookingRepository.
 func (b *bookingRepository) Update(ctx context.Context, booking *domain.Booking) error {
-	return b.db.WithContext(ctx).Table("bookings").Model(&domain.Booking{}).Where("id = ?", booking.ID).Updates(&booking).Error
+	return b.db.WithContext(ctx).Table("bookings").Model(&domain.Booking{}).Where("id = ?", &booking.ID).Updates(&booking).Error
+}
+
+// Delete implements domain.BookingRepository.
+func (b *bookingRepository) Delete(ctx context.Context, booking *domain.Booking) error {
+	return b.db.WithContext(ctx).Table("bookings").Delete(&booking).Error
 }

@@ -1,33 +1,24 @@
 # Endpoint
 
-     //ALL SUPPORT ROUTES
-     e.POST("/login", login)
+ALL SUPPORT ROUTES
+http://127.0.0.1:8080/login
+Body json
 
-     secured.GET("/campsites", getAllCampsites)
-     secured.GET("/campsites/:id", getCampsite)
-     secured.PUT("/campsites/:id", updateCampsite)
-     secured.DELETE("/campsites/:id", deleteCampsite)
+```json
+{
+     "name":"your_username",
+     "password":"your_passwors"
+}
+```
+app.Post("/signup", handler.SignUp)
+Body json
+``` json
+{
+     "name":"name",
+	"email":"your_email",
+	"password":"your_password",
+	"phone_number":"phone_number",
+	"address":"your_location"
+}
 
-     // Booking routes
-     secured.POST("/bookings", createBooking)
-     secured.GET("/bookings", getAllBookings)
-     secured.GET("/bookings/:id", getBooking)
-     secured.PUT("/bookings/:id", updateBooking)
-     secured.DELETE("/bookings/:id", cancelBooking)
-
-     // Review routes
-     secured.POST("/reviews", addReview)
-     secured.GET("/reviews", getAllReviews)
-     secured.GET("/reviews/:id", getReview)
-     secured.PUT("/reviews/:id", updateReview)
-     secured.DELETE("/reviews/:id", deleteReview)
-
-     // User routes
-     secured.GET("/users/:id", getUser)
-     secured.PUT("/users/:id", updateUser)
-
-     // Admin routes
-     secured.GET("/admin/campsites", getAllCampsitesAdmin)
-     secured.GET("/admin/bookings", getAllBookingsAdmin)
-     secured.GET("/admin/reviews", getAllReviewsAdmin)
-     secured.GET("/admin/users", getAllUsers)
+```

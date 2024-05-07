@@ -1,122 +1,58 @@
 package auth
 
-// import (
-// 	"campsite/internal/config"
-// 	"net/http"
-// 	"time"
+import (
+	"campsite/internal/domain"
+	"campsite/internal/dto"
+	"campsite/util"
 
-// 	"github.com/dgrijalva/jwt-go"
-// 	"github.com/labstack/echo/v4"
-// 	"github.com/labstack/echo/v4/middleware"
-// )
+	"github.com/gofiber/fiber/v2"
+)
 
-// JWT Secret Key
-// var jwtSecret = []byte("campsite")
+type userAuth struct {
+	userService domain.UserService
+}
 
-// // User struct
-// type User struct {
-// 	ID       int    `json:"id"`
-// 	Username string `json:"username"`
-// 	Email    string `json:"email"`
-// 	Password string `json:"password"`
-// }
+func NewUser(app *fiber.App, userService domain.UserService, authMid fiber.Handler) {
+	handler := userAuth{
+		userService: userService,
+	}
 
-// // JWT Claims
-// type Claims struct {
-// 	UserID int `json:"userId"`
-// 	jwt.StandardClaims
-// }
+	app.Post("/login", handler.UserLogin)
+	app.Post("/signup", handler.SignUp)
 
-// // Login handler
-// func login(c echo.Context) error {
-// 	// Handle login logic
-// 	// ...
+}
 
-// 	// Create JWT token
-// 	claims := &Claims{
-// 		UserID: user.ID,
-// 		StandardClaims: jwt.StandardClaims{
-// 			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // Token expires in 24 hours
-// 		},
-// 	}
-// 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-// 	tokenString, err := token.SignedString(jwtSecret)
-// 	if err != nil {
-// 		return err
-// 	}
+func (u *userAuth) UserLogin(ctx *fiber.Ctx) error {
+	var userReq dto.UserRequest
+	if err := ctx.BodyParser(&userReq); err != nil {
+		return ctx.Status(401).JSON("Error: error parsed body to json")
+	}
 
-// 	return c.JSON(http.StatusOK, map[string]string{
-// 		"token": tokenString,
-// 	})
-// }
+	user := u.userService.AuthUser(ctx.Context(), userReq)
 
-// // JWT middleware
-// func isAuthorized(next echo.HandlerFunc) echo.HandlerFunc {
-// 	return func(c echo.Context) error {
-// 		token := c.Request().Header.Get("Authorization")
-// 		if token == "" {
-// 			return echo.ErrUnauthorized
-// 		}
+	if user == (dto.UserResponse{}) {
+		return ctx.Status(401).JSON("user_notfound: user not found, signup")
+	}
 
-// 		claims := &Claims{}
-// 		_, err := jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
-// 			return jwtSecret, nil
-// 		})
-// 		if err != nil {
-// 			return err
-// 		}
+	token, err := util.CreateToken(&domain.User{
+		ID:   user.ID,
+		Name: user.Name,
+	})
 
-// 		// Set user ID to context
-// 		c.Set("userId", claims.UserID)
+	if err != nil {
+		return ctx.SendStatus(401)
+	}
 
-// 		return next(c)
-// 	}
-// }
+	return ctx.Status(200).JSON(token)
+}
 
-// func Start(config *config.Config, echo *echo.Echo) {
+func (u *userAuth) SignUp(ctx *fiber.Ctx) error {
+	var userReq dto.UserRequest
+	if err := ctx.BodyParser(&userReq); err != nil {
+		return ctx.Status(401).JSON("Error: error parsed body to json")
+	}
 
-// 	// Middleware
-// 	echo.Use(middleware.Logger())
-// 	echo.Use(middleware.Recover())
+	response := u.userService.SignUp(ctx.Context(), userReq)
 
-// 	// Routes
-// 	echo.POST("/login", login)
-
-// 	// Secure group with JWT middleware
-// 	secured := e.Group("")
-// 	secured.Use(isAuthorized)
-// 	{
-// 		// Campsite routes
-// 		secured.POST("/campsites", addCampsite)
-// 		secured.GET("/campsites", getAllCampsites)
-// 		secured.GET("/campsites/:id", getCampsite)
-// 		secured.PUT("/campsites/:id", updateCampsite)
-// 		secured.DELETE("/campsites/:id", deleteCampsite)
-
-// 		// Booking routes
-// 		secured.POST("/bookings", createBooking)
-// 		secured.GET("/bookings", getAllBookings)
-// 		secured.GET("/bookings/:id", getBooking)
-// 		secured.PUT("/bookings/:id", updateBooking)
-// 		secured.DELETE("/bookings/:id", cancelBooking)
-
-// 		// Review routes
-// 		secured.POST("/reviews", addReview)
-// 		secured.GET("/reviews", getAllReviews)
-// 		secured.GET("/reviews/:id", getReview)
-// 		secured.PUT("/reviews/:id", updateReview)
-// 		secured.DELETE("/reviews/:id", deleteReview)
-
-// 		// User routes
-// 		secured.GET("/users/:id", getUser)
-// 		secured.PUT("/users/:id", updateUser)
-
-// 		// Admin routes
-// 		secured.GET("/admin/campsites", getAllCampsitesAdmin)
-// 		secured.GET("/admin/bookings", getAllBookingsAdmin)
-// 		secured.GET("/admin/reviews", getAllReviewsAdmin)
-// 		secured.GET("/admin/users", getAllUsers)
-// 	}
-
-// 	e.Logger.Fatal(e.Start(":8000"))
-// }
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}

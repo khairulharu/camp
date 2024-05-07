@@ -20,7 +20,7 @@ func NewReviewRepository(db *gorm.DB) domain.ReviewRepository {
 // FindByID implements domain.ReviewRepository.
 func (r *riviewRepository) FindByID(ctx context.Context, id int64) (domain.Review, error) {
 	var review domain.Review
-	err := r.db.WithContext(ctx).Table("reviews").Where("id = ?", id).First(review).Error
+	err := r.db.WithContext(ctx).Table("reviews").Where("id = ?", &id).First(&review).Error
 	if err != nil {
 		return domain.Review{}, err
 	}
@@ -39,12 +39,12 @@ func (r *riviewRepository) GetAll(ctx context.Context) ([]domain.Review, error) 
 
 // Insert implements domain.ReviewRepository.
 func (r *riviewRepository) Insert(ctx context.Context, review *domain.Review) error {
-	return r.db.WithContext(ctx).Table("reviews").Create(review).Error
+	return r.db.WithContext(ctx).Table("reviews").Create(&review).Error
 }
 
 // Update implements domain.ReviewRepository.
 func (r *riviewRepository) Update(ctx context.Context, review *domain.Review) error {
-	return r.db.WithContext(ctx).Table("reviews").Model(&domain.Review{}).Where("id = ?", review.ID).Updates(&review).Error
+	return r.db.WithContext(ctx).Table("reviews").Model(&domain.Review{}).Where("id = ?", &review.ID).Updates(&review).Error
 }
 
 // Delete implements domain.ReviewRepository.

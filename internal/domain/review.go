@@ -14,10 +14,10 @@ type Review struct {
 	UserID     int64
 	Rating     int8
 	Comment    string
-	ReviewDate time.Time      `gorm:"type:datetime(3)"`
-	CreatedAt  time.Time      `gorm:"type:datetime(3)"`
-	UpdatedAt  time.Time      `gorm:"type:datetime(3)"`
-	DeletedAt  gorm.DeletedAt `gorm:"type:datetime(3)"`
+	ReviewDate time.Time
+	CreatedAt  time.Time
+	UpdatedAt  time.Time
+	DeletedAt  gorm.DeletedAt
 }
 
 type ReviewRepository interface {

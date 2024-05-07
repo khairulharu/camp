@@ -8,7 +8,7 @@ import (
 type Availability struct {
 	ID                int64 `gorm:"primaryKey"`
 	CampsiteID        int64
-	Date              time.Time `gorm:"type:datetime(3)"`
+	Date              time.Time
 	QuantityAvailable int64
 }
 

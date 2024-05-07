@@ -9,16 +9,16 @@ import (
 )
 
 type Campsite struct {
-	ID            int64          `gorm:"primaryKey"`
-	Name          string         `db:"name"`
-	Location      string         `db:"location"`
-	Latitude      float64        `db:"latitude"`
-	Longitude     float64        `db:"longitude"`
-	Area          float64        `db:"area"`
-	PricePerNight float64        `db:"price_per_night"`
-	CreatedAt     time.Time      `gorm:"type:datetime(3)"`
-	UpdatedAt     time.Time      `gorm:"type:datetime(3)"`
-	DeletedAt     gorm.DeletedAt `gorm:"type:datetime(3)"`
+	ID            int64   `gorm:"primaryKey"`
+	Name          string  `db:"name"`
+	Location      string  `db:"location"`
+	Latitude      float64 `db:"latitude"`
+	Longitude     float64 `db:"longitude"`
+	Area          float64 `db:"area"`
+	PricePerNight float64 `db:"price_per_night"`
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	DeletedAt     gorm.DeletedAt
 }
 
 type CampsiteRepository interface {

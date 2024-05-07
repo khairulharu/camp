@@ -20,7 +20,7 @@ func NewCampsiteRepository(db *gorm.DB) domain.CampsiteRepository {
 // FindByID implements domain.ReviewRepository.
 func (c *campsiteRepository) FindByID(ctx context.Context, id int64) (domain.Campsite, error) {
 	var campsite domain.Campsite
-	err := c.db.WithContext(ctx).Table("campsites").Where("id = ?", id).First(campsite).Error
+	err := c.db.WithContext(ctx).Table("campsites").Where("id = ?", &id).First(&campsite).Error
 	if err != nil {
 		return domain.Campsite{}, err
 	}
@@ -39,12 +39,12 @@ func (c *campsiteRepository) GetAll(ctx context.Context) ([]domain.Campsite, err
 
 // Insert implements domain.campsiteRepository.
 func (c *campsiteRepository) Insert(ctx context.Context, campsite *domain.Campsite) error {
-	return c.db.WithContext(ctx).Table("campsites").Create(campsite).Error
+	return c.db.WithContext(ctx).Table("campsites").Create(&campsite).Error
 }
 
 // Update implements domain.campsiteRepository.
 func (c *campsiteRepository) Update(ctx context.Context, campsite *domain.Campsite) error {
-	return c.db.WithContext(ctx).Table("campsites").Model(&domain.Campsite{}).Where("id = ?", campsite.ID).Updates(&campsite).Error
+	return c.db.WithContext(ctx).Table("campsites").Model(&domain.Campsite{}).Where("id = ?", &campsite.ID).Updates(&campsite).Error
 }
 
 // Delete implements domain.CampsiteRepository.

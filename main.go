@@ -1,9 +1,15 @@
 package main
 
 import (
+	"campsite/internal/auth"
 	"campsite/internal/config"
 	"campsite/internal/database"
 	"campsite/internal/repository"
+	"campsite/internal/service"
+	"campsite/middleware"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func main() {
@@ -12,6 +18,21 @@ func main() {
 
 	dbConnection := database.NewMySqlConnection(config)
 
-	_ = repository.NewUserRepository(dbConnection)
+	userRepository := repository.NewUserRepository(dbConnection)
+	reviewRepository := repository.NewReviewRepository(dbConnection)
+
+	userService := service.NewUser(userRepository)
+	reviewService := service.NewReview(reviewRepository)
+
+	authMid := middleware.Authenticate()
+
+	app := fiber.New()
+
+	app.Use(logger.New())
+
+	auth.NewUser(app, userService, authMid)
+	auth.NewReview(app, reviewService, authMid)
+
+	_ = app.Listen(config.SRV.Host + ":" + config.SRV.Port)
 
 }
