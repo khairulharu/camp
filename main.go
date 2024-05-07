@@ -4,9 +4,9 @@ import (
 	"campsite/internal/auth"
 	"campsite/internal/config"
 	"campsite/internal/database"
+	"campsite/internal/middleware"
 	"campsite/internal/repository"
 	"campsite/internal/service"
-	"campsite/middleware"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
