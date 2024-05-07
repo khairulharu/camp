@@ -3,7 +3,7 @@ package auth
 import (
 	"campsite/internal/domain"
 	"campsite/internal/dto"
-	"campsite/util"
+	"campsite/internal/util"
 
 	"github.com/gofiber/fiber/v2"
 )
