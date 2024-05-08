@@ -10,7 +10,7 @@ Body json
      "password":"your_passwors"
 }
 ```
-app.Post("/signup", handler.SignUp)
+http://127.0.0.1:8080/signup
 Body json
 ``` json
 {
