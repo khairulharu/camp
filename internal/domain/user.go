@@ -29,7 +29,7 @@ type UserRepository interface {
 }
 
 type UserService interface {
-	AuthUser(ctx context.Context, request dto.UserRequest) dto.UserResponse
+	AuthUser(ctx context.Context, request dto.UserRequest) dto.Response
 	GetUser(ctx context.Context, id int64) dto.Response
 	UpdateUser(ctx context.Context, request dto.UserRequest) dto.Response
 	SignUp(ctx context.Context, request dto.UserRequest) dto.Response

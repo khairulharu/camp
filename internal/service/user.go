@@ -23,14 +23,14 @@ func (u *userService) GetUser(ctx context.Context, id int64) dto.Response {
 
 	if err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.FORBIDDEN,
 			Message: "not found",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accepted",
 		Data: dto.UserResponse{
 			ID:          user.ID,
@@ -57,37 +57,47 @@ func (u *userService) UpdateUser(ctx context.Context, request dto.UserRequest) d
 
 	if err := u.userRepository.Update(ctx, &user); err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.FORBIDDEN,
 			Message: "failed update",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "user updated",
 	}
 }
 
 // AuthUser implements domain.UserService.
-func (u *userService) AuthUser(ctx context.Context, request dto.UserRequest) dto.UserResponse {
+func (u *userService) AuthUser(ctx context.Context, request dto.UserRequest) dto.Response {
 	user, err := u.userRepository.FindByUsername(ctx, request.Name)
 
 	if request.Password != user.Password {
-		return dto.UserResponse{}
+		return dto.Response{
+			Status:  dto.BADREQUEST,
+			Message: "failed",
+		}
 	}
 
 	if err != nil {
-		return dto.UserResponse{}
+		return dto.Response{
+			Status:  dto.FORBIDDEN,
+			Message: "error user login",
+		}
 	}
 
-	return dto.UserResponse{
-		ID:          user.ID,
-		Name:        user.Name,
-		Email:       user.Email,
-		Password:    user.Password,
-		PhoneNumber: request.PhoneNumber,
-		Address:     request.Address,
+	return dto.Response{
+		Status:  dto.OK,
+		Message: "acceptd",
+		Data: dto.UserResponse{
+			ID:          user.ID,
+			Name:        user.Name,
+			Email:       user.Email,
+			Password:    user.Password,
+			PhoneNumber: request.PhoneNumber,
+			Address:     request.Address,
+		},
 	}
 }
 
@@ -98,7 +108,7 @@ func (u *userService) SignUp(ctx context.Context, request dto.UserRequest) dto.R
 
 	if userCheckName != (domain.User{}) {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.BADREQUEST,
 			Message: "user exist cannot create",
 			Error:   "user Exist",
 		}
@@ -114,14 +124,14 @@ func (u *userService) SignUp(ctx context.Context, request dto.UserRequest) dto.R
 
 	if err != nil {
 		return dto.Response{
-			Status:  "500",
+			Status:  dto.FORBIDDEN,
 			Message: "something wrong",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accepted",
 	}
 
