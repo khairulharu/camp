@@ -7,7 +7,6 @@ import (
 	"campsite/internal/middleware"
 	"campsite/internal/repository"
 	"campsite/internal/service"
-	"log"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -17,13 +16,7 @@ func main() {
 
 	config := config.Get()
 
-	errCh := make(chan error)
-
-	err := <-errCh
-
-	if err != nil {
-		log.Fatal("error from errChan")
-	}
+	// errCh := make(chan error)
 
 	dbConnection := database.NewMySqlConnection(config)
 
@@ -42,6 +35,6 @@ func main() {
 	auth.NewUser(app, userService, authMid)
 	auth.NewReview(app, reviewService, authMid)
 
-	errCh <- app.Listen(config.SRV.Host + ":" + config.SRV.Port)
+	_ = app.Listen(config.SRV.Host + ":" + config.SRV.Port)
 
 }
