@@ -23,5 +23,4 @@ type AdminService interface {
 	GetAllCampsites(ctx context.Context) dto.Response
 	GetAllBookings(ctx context.Context) dto.Response
 	GetAllReviews(ctx context.Context) dto.Response
-	GetAllUsers(ctx context.Context) dto.Response
 }
