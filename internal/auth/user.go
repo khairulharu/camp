@@ -28,22 +28,22 @@ func (u *userAuth) UserLogin(ctx *fiber.Ctx) error {
 		return ctx.Status(401).JSON("Error: error parsed body to json")
 	}
 
-	user := u.userService.AuthUser(ctx.Context(), userReq)
+	response := u.userService.AuthUser(ctx.Context(), userReq)
 
-	if user == (dto.UserResponse{}) {
-		return ctx.Status(401).JSON("user_notfound: user not found, signup")
+	if response.Status != dto.OK {
+		return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 	}
 
 	token, err := util.CreateToken(&domain.User{
-		ID:   user.ID,
-		Name: user.Name,
+		ID:   userReq.ID,
+		Name: userReq.Name,
 	})
 
 	if err != nil {
-		return ctx.SendStatus(401)
+		return ctx.SendStatus(util.GetHttpStatus(dto.INTERNALSERVERERROR))
 	}
 
-	return ctx.Status(200).JSON(token)
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(token)
 }
 
 func (u *userAuth) SignUp(ctx *fiber.Ctx) error {
