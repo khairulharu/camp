@@ -30,14 +30,14 @@ func (r *reviewService) AddReview(ctx context.Context, request dto.ReviewRequest
 
 	if err := r.reviewRepository.Insert(ctx, &review); err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.BADREQUEST,
 			Message: "fail deleted review",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "succes add review",
 	}
 }
@@ -49,14 +49,14 @@ func (r *reviewService) DeleteReview(ctx context.Context, request dto.ReviewRequ
 
 	if err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.NOTFOUND,
 			Message: "fail delete review",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "deleted",
 	}
 }
@@ -67,7 +67,7 @@ func (r *reviewService) GetAllReviews(ctx context.Context) dto.Response {
 
 	if err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.FORBIDDEN,
 			Message: "cannot gett all Review",
 			Error:   err.Error(),
 		}
@@ -87,7 +87,7 @@ func (r *reviewService) GetAllReviews(ctx context.Context) dto.Response {
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accpted",
 		Data:    reviewsResponse,
 	}
@@ -99,7 +99,7 @@ func (r *reviewService) GetReview(ctx context.Context, id int64) dto.Response {
 
 	if err != nil {
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.FORBIDDEN,
 			Message: "fail get review",
 			Error:   err.Error(),
 		}
@@ -129,14 +129,16 @@ func (r *reviewService) UpdateReview(ctx context.Context, request dto.ReviewRequ
 	}
 
 	if err := r.reviewRepository.Update(ctx, &review); err != nil {
+
+		// mayber user err and validate with all gorm err
 		return dto.Response{
-			Status:  "401",
+			Status:  dto.NOTFOUND,
 			Message: "failed update review",
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accepted",
 	}
 }
