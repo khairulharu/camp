@@ -30,13 +30,13 @@ func (b *bookingService) AddBooking(ctx context.Context, request dto.BookingRequ
 
 	if err := b.bookingRepository.Insert(ctx, &booking); err != nil {
 		return dto.Response{
-			Status:  "400",
+			Status:  dto.BADREQUEST,
 			Message: "Cannot add booking",
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.CREATED,
 		Message: "booking add",
 	}
 }
@@ -49,14 +49,14 @@ func (b *bookingService) DeleteBooking(ctx context.Context, request dto.BookingR
 
 	if err != nil {
 		return dto.Response{
-			Status:  "400",
+			Status:  dto.BADREQUEST,
 			Message: "cannot delete",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "booking added",
 	}
 }
@@ -67,7 +67,7 @@ func (b *bookingService) GetAllBookings(ctx context.Context) dto.Response {
 
 	if err != nil {
 		return dto.Response{
-			Status:  "400",
+			Status:  dto.INTERNALSERVERERROR,
 			Message: "Failed get bookings",
 		}
 	}
@@ -88,7 +88,7 @@ func (b *bookingService) GetAllBookings(ctx context.Context) dto.Response {
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accpeted",
 		Data:    bookingsResponse,
 	}
@@ -100,14 +100,14 @@ func (b *bookingService) GetBooking(ctx context.Context, id int64) dto.Response 
 
 	if err != nil {
 		return dto.Response{
-			Status:  "400",
+			Status:  dto.BADREQUEST,
 			Message: "cannot get booking",
 			Error:   err.Error(),
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "accepted",
 		Data: dto.BookingResponse{
 			ID:             booking.ID,
@@ -138,13 +138,13 @@ func (b *bookingService) UpdateBooking(ctx context.Context, request dto.BookingR
 
 	if err := b.bookingRepository.Update(ctx, &booking); err != nil {
 		return dto.Response{
-			Status:  "400",
+			Status:  dto.BADREQUEST,
 			Message: "error when update booking",
 		}
 	}
 
 	return dto.Response{
-		Status:  "200",
+		Status:  dto.OK,
 		Message: "booking update",
 	}
 }
