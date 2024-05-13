@@ -20,6 +20,8 @@ func NewReview(app *fiber.App, reviewService domain.ReviewService, authMid fiber
 
 	app.Post("/review", authMid, handler.UserAddReview)
 	app.Get("/review/:id?", authMid, handler.GetReview)
+	app.Get("/reviews", authMid, handler.GetAllReviews)
+	app.Delete("/review/:id?", authMid, handler.DeleteReview)
 
 }
 
@@ -53,6 +55,32 @@ func (r *reviewAuth) GetReview(ctx *fiber.Ctx) error {
 	}
 
 	response := r.reviewService.GetReview(ctx.Context(), int64(id))
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (r *reviewAuth) GetAllReviews(ctx *fiber.Ctx) error {
+	response := r.reviewService.GetAllReviews(ctx.Context())
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (r *reviewAuth) DeleteReview(ctx *fiber.Ctx) error {
+	idS := ctx.Params("id")
+
+	if idS == ("") {
+		return ctx.Status(fiber.StatusBadRequest).JSON("require param id for delete which review")
+	}
+
+	id, err := strconv.Atoi(idS)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON("error when parsing id to id int get: ", err.Error())
+	}
+
+	response := r.reviewService.DeleteReview(ctx.Context(), dto.ReviewRequest{
+		ID: int64(id),
+	})
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
