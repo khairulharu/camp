@@ -22,6 +22,7 @@ func NewReview(app *fiber.App, reviewService domain.ReviewService, authMid fiber
 	app.Get("/review/:id?", authMid, handler.GetReview)
 	app.Get("/reviews", authMid, handler.GetAllReviews)
 	app.Delete("/review/:id?", authMid, handler.DeleteReview)
+	app.Patch("/review/:id?", authMid, handler.EditReview)
 
 }
 
@@ -83,4 +84,12 @@ func (r *reviewAuth) DeleteReview(ctx *fiber.Ctx) error {
 	})
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (r *reviewAuth) EditReview(ctx *fiber.Ctx) error {
+	idS := ctx.Params("id")
+
+	if idS == ("") {
+		return ctx.Status(fiber.StatusBadRequest).JSON("")
+	}
 }
