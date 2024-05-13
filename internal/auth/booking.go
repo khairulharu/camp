@@ -22,6 +22,7 @@ func NewBooking(app *fiber.App, bookingService domain.BookingService, authMid fi
 	app.Get("/bookings", handler.GetAllBookings)
 	app.Delete("/booking/:id?", authMid, handler.DeleteBooking)
 	app.Patch("/booking/:id?", authMid, handler.EditBooking)
+	app.Get("/booking/:id?", authMid, handler.GetBooking)
 }
 
 func (b *bookingAuth) CreateBooking(ctx *fiber.Ctx) error {
@@ -83,6 +84,24 @@ func (b *bookingAuth) EditBooking(ctx *fiber.Ctx) error {
 	bookingRequest.CampsiteID = int64(id)
 
 	response := b.bokingService.UpdateBooking(ctx.Context(), bookingRequest)
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (b *bookingAuth) GetBooking(ctx *fiber.Ctx) error {
+	idS := ctx.Params("id")
+
+	if idS == ("") {
+		return ctx.Status(util.GetHttpStatus(dto.BADREQUEST)).JSON("message:id param null")
+	}
+
+	id, err := strconv.Atoi(idS)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(err.Error())
+	}
+
+	response := b.bokingService.GetBooking(ctx.Context(), int64(id))
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
