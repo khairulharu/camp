@@ -18,6 +18,7 @@ func NewReview(app *fiber.App, reviewService domain.ReviewService, authMid fiber
 	}
 
 	app.Post("/review", authMid, handler.UserAddReview)
+	app.Get("/review/:id?", authMid)
 
 }
 
@@ -25,7 +26,7 @@ func (r *reviewAuth) UserAddReview(ctx *fiber.Ctx) error {
 	var reviewReqBody dto.ReviewRequest
 
 	if err := ctx.BodyParser(&reviewReqBody); err != nil {
-		return ctx.Status(401).JSON("error parsing body to request")
+		return ctx.Status(fiber.StatusBadRequest).JSON("error parsing body to request get: ", err.Error())
 	}
 
 	userLogin := ctx.Locals("x-user").(*util.MyCustomClaims)
