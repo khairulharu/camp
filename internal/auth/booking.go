@@ -4,6 +4,7 @@ import (
 	"campsite/internal/domain"
 	"campsite/internal/dto"
 	"campsite/internal/util"
+	"strconv"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -35,6 +36,24 @@ func (b *bookingAuth) CreateBooking(ctx *fiber.Ctx) error {
 
 func (b *bookingAuth) GetAllBookings(ctx *fiber.Ctx) error {
 	response := b.bokingService.GetAllBookings(ctx.Context())
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (b *bookingAuth) DeleteBooking(ctx *fiber.Ctx) error {
+	idS := ctx.Params("id")
+
+	if idS == ("") {
+		return ctx.Status(util.GetHttpStatus(dto.BADREQUEST)).JSON("message:id param null")
+	}
+
+	id, err := strconv.Atoi(idS)
+
+	if err != nil {
+		return ctx.SendStatus(fiber.StatusInternalServerError)
+	}
+
+	response := b.bokingService.DeleteBooking(ctx.Context(), dto.BookingRequest{ID: int64(id)})
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
