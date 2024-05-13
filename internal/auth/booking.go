@@ -47,6 +47,10 @@ func (b *bookingAuth) DeleteBooking(ctx *fiber.Ctx) error {
 	idS := ctx.Params("id")
 
 	if idS == ("") {
+		return ctx.Status(fiber.StatusBadRequest).JSON("need param id")
+	}
+
+	if idS == ("") {
 		return ctx.Status(util.GetHttpStatus(dto.BADREQUEST)).JSON("message:id param null")
 	}
 
@@ -66,7 +70,7 @@ func (b *bookingAuth) EditBooking(ctx *fiber.Ctx) error {
 	idS := ctx.Params("id")
 
 	if idS == ("") {
-		return ctx.Status(util.GetHttpStatus(dto.BADREQUEST)).JSON("message:id param null")
+		return ctx.Status(fiber.StatusBadRequest).JSON("message:id param null")
 	}
 
 	id, err := strconv.Atoi(idS)
@@ -92,7 +96,7 @@ func (b *bookingAuth) GetBooking(ctx *fiber.Ctx) error {
 	idS := ctx.Params("id")
 
 	if idS == ("") {
-		return ctx.Status(util.GetHttpStatus(dto.BADREQUEST)).JSON("message:id param null")
+		return ctx.Status(fiber.StatusBadRequest).JSON("message:id param null")
 	}
 
 	id, err := strconv.Atoi(idS)
