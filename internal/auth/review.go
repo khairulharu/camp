@@ -87,9 +87,27 @@ func (r *reviewAuth) DeleteReview(ctx *fiber.Ctx) error {
 }
 
 func (r *reviewAuth) EditReview(ctx *fiber.Ctx) error {
+	var reviewRequest dto.ReviewRequest
+
+	if err := ctx.BodyParser(&reviewRequest); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON("bodyParsererror")
+	}
+
 	idS := ctx.Params("id")
 
 	if idS == ("") {
-		return ctx.Status(fiber.StatusBadRequest).JSON("")
+		return ctx.Status(fiber.StatusBadRequest).JSON("message:erorrs need param id")
 	}
+
+	id, err := strconv.Atoi(idS)
+
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON("message:%s", err.Error())
+	}
+
+	reviewRequest.ID = int64(id)
+
+	response := r.reviewService.UpdateReview(ctx.Context(), reviewRequest)
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
