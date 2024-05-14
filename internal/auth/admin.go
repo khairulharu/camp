@@ -18,7 +18,7 @@ func NewAdmin(app *fiber.App, adminService domain.AdminService, authMid fiber.Ha
 
 	app.Get("/allbookings", authMid, handler.GetAllBookings)
 	app.Get("/allcampsites", authMid, handler.GetAllCampsites)
-	app.Get("/allreviews", authMid)
+	app.Get("/allreviews", authMid, handler.GetAllReviews)
 }
 
 func (a *adminAuth) GetAllBookings(ctx *fiber.Ctx) error {
