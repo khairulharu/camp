@@ -25,3 +25,9 @@ func (a *adminAuth) GetAllBookings(ctx *fiber.Ctx) error {
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
+
+func (a *adminAuth) GetAllCampsite(ctx *fiber.Ctx) error {
+	response := a.adminService.GetAllCampsites(ctx.Context())
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
