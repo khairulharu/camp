@@ -18,6 +18,7 @@ func NewAdmin(app *fiber.App, adminService domain.AdminService, authMid fiber.Ha
 
 	app.Get("/allbookings", authMid, handler.GetAllBookings)
 	app.Get("/allcampsites", authMid)
+	app.Get("/allreviews", authMid)
 }
 
 func (a *adminAuth) GetAllBookings(ctx *fiber.Ctx) error {
@@ -26,8 +27,14 @@ func (a *adminAuth) GetAllBookings(ctx *fiber.Ctx) error {
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
 
-func (a *adminAuth) GetAllCampsite(ctx *fiber.Ctx) error {
+func (a *adminAuth) GetAllCampsites(ctx *fiber.Ctx) error {
 	response := a.adminService.GetAllCampsites(ctx.Context())
+
+	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
+}
+
+func (a *adminAuth) GetAllReviews(ctx *fiber.Ctx) error {
+	response := a.adminService.GetAllReviews(ctx.Context())
 
 	return ctx.Status(util.GetHttpStatus(response.Status)).JSON(response)
 }
