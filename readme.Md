@@ -7,18 +7,24 @@ http://127.0.0.1:8080/login
 Login User: POST
 Content-Type:appliaction/json
 Body json
-With Return JWT token
 ```json
 {
      "name":"string",
      "password":"string"
 }
 ```
+
+Reurn Response OK if no error
+```json
+{
+    "token_string_jwt"
+}
+```
+With Return JWT token
 http://127.0.0.1:8080/signup
 SignUp User: POST
 Content-Type:appliaction/json
 Body json
-Return Response OK if no error
 ``` json
 {
      "name":"string",
@@ -27,13 +33,22 @@ Return Response OK if no error
 	"phone_number":"string",
 	"address":"string"
 }
+```
+Return Response OK if no error
+```json
+{
+    "status": "string",
+    "message": "string",
+    "data": nill,
+    "error": "string"
+}
+```
 
 REVIEW
 http://127.0.0.1:8080/review
 Add review: POST 
 Content-Type:appliaction/json
 Body JSON
-Reurn Response OK if no error
 ```json
 {
      "campsite_id":"int",
@@ -44,17 +59,29 @@ Reurn Response OK if no error
 }
 
 ```
-http://127.0.0.1:8080/review/id
-get review: POST
-Content-Type:appliaction/json
-Body JSON 
+Return Response OK if no error
 ```json
 {
+    "status": "string",
+    "message": "string",
+    "data": nill,
+    "error": "string"
+}
+```
+http://127.0.0.1:8080/review/id
+get review: GET
+Return Response OK with Data, if no error
+```json
+{
+    "status": "string",
+    "message": "string",
+    "data": {
      "campsite_id":"int",
 	"user_id":"int",
 	"rating":"int",
 	"comment":"string",
 	"address":"time.Time"
+},
+    "error": "string"
 }
-
 ```
