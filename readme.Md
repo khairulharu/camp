@@ -1,6 +1,7 @@
 # Endpoint
 
 ALL SUPPORT ROUTES
+USER
 http://127.0.0.1:8080/login
 Body json
 
@@ -21,21 +22,5 @@ Body json
 	"address":"your_location"
 }
 
-```
-
-http://127.0.0.1:8080/review
-
-
-{
-
-}
-
-
-
-http://127.0.0.1:8080/review
-
-
-{
-	hh
-
-}
+REVIEW
+http://127.0.0.1:8080/signup
