@@ -2,7 +2,7 @@
 
 ALL SUPPORT ROUTES
 
-Api for booking campsite use clean architecture pattern, this all we need for creating appliaction booking, some business logic have to add, you can edit in `/internal/service` which all of campsite.
+Api for booking campsite use clean architecture pattern, this all we need for creating appliaction booking, if you need business logic for complex code you can edit in `/internal/service`.
 
 # USER
 http://127.0.0.1:8080/login
