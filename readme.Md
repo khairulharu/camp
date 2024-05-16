@@ -1,10 +1,13 @@
 # Endpoint
 
 ALL SUPPORT ROUTES
+
 USER
 http://127.0.0.1:8080/login
+Login User: POST
+Content-Type:appliaction/json
 Body json
-
+With Return JWT token
 ```json
 {
      "name":"string",
@@ -12,7 +15,10 @@ Body json
 }
 ```
 http://127.0.0.1:8080/signup
+SignUp User: POST
+Content-Type:appliaction/json
 Body json
+Return Response OK if no error
 ``` json
 {
      "name":"string",
@@ -25,7 +31,9 @@ Body json
 REVIEW
 http://127.0.0.1:8080/review
 Add review: POST 
+Content-Type:appliaction/json
 Body JSON
+Reurn Response OK if no error
 ```json
 {
      "campsite_id":"int",
@@ -37,7 +45,9 @@ Body JSON
 
 ```
 http://127.0.0.1:8080/review/id
-get review: POST 
+get review: POST
+Content-Type:appliaction/json
+Body JSON 
 ```json
 {
      "campsite_id":"int",
