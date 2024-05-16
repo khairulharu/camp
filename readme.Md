@@ -23,4 +23,15 @@ Body json
 }
 
 REVIEW
-http://127.0.0.1:8080/signup
+http://127.0.0.1:8080/review
+add review: POST 
+```json
+{
+     "campsite_id":"int",
+	"user_id":"int",
+	"rating":"int",
+	"comment":"string",
+	"address":"time.Time"
+}
+
+```
