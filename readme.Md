@@ -88,3 +88,23 @@ Return Response OK with Data, if no error
     "error": "string"
 }
 ```
+
+```
+http://127.0.0.1:8080/review/id
+get all review: GET
+Return Response OK with Data, if no error
+```json
+{
+    "status": "string",
+    "message": "string",
+    "data": {
+	"id":"int",
+     "campsite_id":"int",
+	"user_id":"int",
+	"rating":"int",
+	"comment":"string",
+	"address":"time.Time"
+},
+    "error": "string"
+}
+```
