@@ -110,3 +110,5 @@ Return Response OK with Data, if no error
 ```
 
 GetReviewWithSpecificID
+
+UpdateReviewWithSpecificID
