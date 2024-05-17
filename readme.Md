@@ -90,7 +90,7 @@ Return Response OK with Data, if no error
 ```
 
 ```
-http://127.0.0.1:8080/review/id
+http://127.0.0.1:8080/reviews
 get all review: GET
 Return Response OK with Data, if no error
 ```json
