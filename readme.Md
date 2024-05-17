@@ -108,3 +108,5 @@ Return Response OK with Data, if no error
     "error": "string"
 }
 ```
+
+GetReviewWithSpecificID
