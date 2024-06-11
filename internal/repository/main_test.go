@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"campsite/internal/config"
+	"campsite/internal/database"
 	"testing"
 
 	"gorm.io/gorm"
@@ -8,5 +10,8 @@ import (
 
 var dbGorm *gorm.DB
 
-func TestInitDatabaseTesting(t *testing.M) {
+func Main(m *testing.M) {
+	configTest := config.GetConfigTest()
+
+	dbGorm = database.NewMySqlConnection(configTest)
 }
