@@ -1,10 +1,23 @@
 package repository_test
 
-import "testing"
+import (
+	"campsite/internal/domain"
+	"campsite/internal/repository"
+	"context"
+	"testing"
+)
 
 func TestActivityRepository(t *testing.T) {
+	//dbGorm Get from main_test.go there set a variable to containing database connection
+	activityRepository := repository.NewActivityRepository(dbGorm)
 
-}
+	//create a mock data represent all data
 
-func TestInsertActivity(t *testing.T) {
+	activityTestCase := domain.Activity{}
+
+	t.Run("InsertNewActivity", func(t *testing.T) {
+		if err := activityRepository.Insert(context.Background(), &activityTestCase); err != nil {
+			t.Error(err)
+		}
+	})
 }
