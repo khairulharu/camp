@@ -10,8 +10,10 @@ import (
 
 var dbGorm *gorm.DB
 
-func Main(m *testing.M) {
+func TestMain(m *testing.M) {
 	configTest := config.GetConfigTest()
 
 	dbGorm = database.NewMySqlConnection(configTest)
+
+	m.Run()
 }
