@@ -13,7 +13,10 @@ func TestActivityRepository(t *testing.T) {
 
 	//create a mock data represent all data
 
-	activityTestCase := domain.Activity{}
+	activityTestCase := domain.Activity{
+		Name:        "testing_name",
+		Description: "lorem ipsum dolor sit amet get another backend skill that providing and ruining another creatuition mean that is not impossible anymore that can be ruin everything can another mean is not possibel to containing othe creation",
+	}
 
 	t.Run("InsertNewActivity", func(t *testing.T) {
 		if err := activityRepository.Insert(context.Background(), &activityTestCase); err != nil {
