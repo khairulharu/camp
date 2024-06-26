@@ -30,6 +30,7 @@ func Get() *Config {
 	}
 }
 
+// Just get config for testing code see config file and loader.go
 func GetConfigTest() *Config {
 	//not use env so can run without env just
 	// if err := godotenv.Load(); err != nil {
