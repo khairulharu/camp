@@ -15,7 +15,7 @@ func TestActivityRepository(t *testing.T) {
 	//create a mock data represent all data
 
 	activityTestCase := domain.Activity{
-		ID:          78,
+		ID:          111,
 		Name:        "testing_name",
 		Description: "lorem ipsum dolor sit amet get another backend skill that providing and ruining another creatuition mean that is not impossible anymore that can be ruin everything can another mean is not possibel to containing othe creation",
 	}
@@ -41,7 +41,7 @@ func TestActivityRepository(t *testing.T) {
 	t.Run("UpdateActivity", func(t *testing.T) {
 
 		testUpdateActivity := domain.Activity{
-			ID:          78,
+			ID:          111,
 			Name:        "testing_upddate_name",
 			Description: "updated",
 		}
@@ -52,8 +52,8 @@ func TestActivityRepository(t *testing.T) {
 
 		resultUpdateActifity, _ := activityRepository.FindByID(context.Background(), testUpdateActivity.ID)
 
-		if testUpdateActivity != resultUpdateActifity {
-			t.Error("error when update test case")
+		if !reflect.DeepEqual(testUpdateActivity, resultUpdateActifity) {
+			t.Error("FailTest Update Activity")
 		}
 	})
 
