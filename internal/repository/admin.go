@@ -44,5 +44,5 @@ func (a *adminRepository) Insert(ctx context.Context, admin *domain.Admin) error
 
 // Update implements domain.AdminRepository.
 func (a *adminRepository) Update(ctx context.Context, admin *domain.Admin) error {
-	return a.db.WithContext(ctx).Table("admins").Model(&domain.Availability{}).Where("id = ?", &admin.ID).Updates(&admin).Error
+	return a.db.WithContext(ctx).Table("admins").Model(&domain.Admin{}).Where("id = ?", &admin.ID).Updates(&admin).Error
 }
