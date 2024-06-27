@@ -18,13 +18,12 @@ func NewActivityRepository(db *gorm.DB) domain.ActivityRepository {
 }
 
 // FindByID implements domain.ReviewRepository.
-func (a *activityRepository) FindByID(ctx context.Context, id int64) (domain.Activity, error) {
-	var activity domain.Activity
-	err := a.db.WithContext(ctx).Table("activities").Where("id = ?", &id).First(&activity).Error
+func (a *activityRepository) FindByID(ctx context.Context, id int64) (activity domain.Activity, err error) {
+	err = a.db.WithContext(ctx).Table("activities").Where("id = ?", &id).First(&activity).Error
 	if err != nil {
 		return domain.Activity{}, err
 	}
-	return activity, nil
+	return
 }
 
 // GetAll implements domain.activityRepository.

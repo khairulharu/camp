@@ -4,6 +4,7 @@ import (
 	"campsite/internal/domain"
 	"campsite/internal/repository"
 	"context"
+	"reflect"
 	"testing"
 )
 
@@ -32,8 +33,8 @@ func TestActivityRepository(t *testing.T) {
 			t.Error(err.Error())
 		}
 
-		if activityResult != activityTestCase {
-			t.Error("eror findById test case result different")
+		if !reflect.DeepEqual(activityResult, activityTestCase) {
+			t.Error("error testcase Combining ID result and inputTestCase")
 		}
 	})
 
