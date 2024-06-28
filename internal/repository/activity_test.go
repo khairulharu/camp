@@ -21,12 +21,12 @@ func TestActivityRepository(t *testing.T) {
 		updated  domain.Activity
 	}{
 		{input: domain.Activity{
-			ID:          1234,
+			ID:          1789,
 			Name:        "jskjdhfdjkk",
 			Description: "Lorm ipsum tol kl darimana duitnya",
 		}},
 		{expected: domain.Activity{
-			ID:          1234,
+			ID:          1789,
 			Name:        "jskjdhfdjkk",
 			Description: "Lorm ipsum tol kl darimana duitnya",
 		}},
@@ -64,7 +64,7 @@ func TestActivityRepository(t *testing.T) {
 			}
 
 			t.Log(activityResult)
-			t.Log(testCase.expected)
+			t.Log(testCase.expected.ID)
 
 			if activityResult.ID != testCase.expected.ID {
 				t.Error("id")
