@@ -5,7 +5,7 @@ import "context"
 type Activity struct {
 	ID          int64
 	Name        string
-	Description string `gorm:"type:text"`
+	Description string
 }
 
 type ActivityRepository interface {

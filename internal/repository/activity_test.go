@@ -21,22 +21,22 @@ func TestActivityRepository(t *testing.T) {
 		updated  domain.Activity
 	}{
 		{input: domain.Activity{
-			ID:          23484,
+			ID:          1234,
 			Name:        "jskjdhfdjkk",
 			Description: "Lorm ipsum tol kl darimana duitnya",
 		}},
 		{expected: domain.Activity{
-			ID:          23484,
+			ID:          1234,
 			Name:        "jskjdhfdjkk",
 			Description: "Lorm ipsum tol kl darimana duitnya",
 		}},
 		{update: domain.Activity{
-			ID:          23484,
+			ID:          1234,
 			Name:        "update_name",
 			Description: "updated_description",
 		}},
 		{updated: domain.Activity{
-			ID:          23484,
+			ID:          1234,
 			Name:        "update_name",
 			Description: "updated_description",
 		}},
@@ -63,8 +63,19 @@ func TestActivityRepository(t *testing.T) {
 				t.Error(err.Error())
 			}
 
-			if !reflect.DeepEqual(activityResult, testCase.expected) {
-				t.Error("error testcase Combining ID result and inputTestCase")
+			t.Log(activityResult)
+			t.Log(testCase.expected)
+
+			if activityResult.ID != testCase.expected.ID {
+				t.Error("id")
+			}
+
+			if activityResult.Name != testCase.expected.Name {
+				t.Error("name")
+			}
+
+			if activityResult.Description != testCase.expected.Description {
+				t.Error("description")
 			}
 		})
 	}
