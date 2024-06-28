@@ -14,48 +14,74 @@ func TestActivityRepository(t *testing.T) {
 
 	//create a mock data represent all data
 
-	activityTestCase := domain.Activity{
-		ID:          111,
-		Name:        "testing_name",
-		Description: "lorem ipsum dolor sit amet get another backend skill that providing and ruining another creatuition mean that is not impossible anymore that can be ruin everything can another mean is not possibel to containing othe creation",
+	testCases := []struct {
+		input    domain.Activity
+		expected domain.Activity
+		update   domain.Activity
+		updated  domain.Activity
+	}{
+		{input: domain.Activity{
+			ID:          23484,
+			Name:        "jskjdhfdjkk",
+			Description: "Lorm ipsum tol kl darimana duitnya",
+		}},
+		{expected: domain.Activity{
+			ID:          23484,
+			Name:        "jskjdhfdjkk",
+			Description: "Lorm ipsum tol kl darimana duitnya",
+		}},
+		{update: domain.Activity{
+			ID:          23484,
+			Name:        "update_name",
+			Description: "updated_description",
+		}},
+		{updated: domain.Activity{
+			ID:          23484,
+			Name:        "update_name",
+			Description: "updated_description",
+		}},
 	}
 
-	t.Run("InsertNewActivity", func(t *testing.T) {
-		if err := activityRepository.Insert(context.Background(), &activityTestCase); err != nil {
-			t.Error(err)
-		}
-	})
+	// activityTestCase := domain.Activity{
+	// 	ID:          111,
+	// 	Name:        "testing_name",
+	// 	Description: "lorem ipsum dolor sit amet get another backend skill that providing and ruining another creatuition mean that is not impossible anymore that can be ruin everything can another mean is not possibel to containing othe creation",
+	// }
+	for _, testCase := range testCases {
+		t.Run("InsertNewActivity", func(t *testing.T) {
+			if err := activityRepository.Insert(context.Background(), &testCase.input); err != nil {
+				t.Error(err)
+			}
+		})
+	}
 
-	t.Run("FindById", func(t *testing.T) {
-		activityResult, err := activityRepository.FindByID(context.Background(), activityTestCase.ID)
+	for _, testCase := range testCases {
+		t.Run("FindById", func(t *testing.T) {
+			activityResult, err := activityRepository.FindByID(context.Background(), testCase.input.ID)
 
-		if err != nil {
-			t.Error(err.Error())
-		}
+			if err != nil {
+				t.Error(err.Error())
+			}
 
-		if !reflect.DeepEqual(activityResult, activityTestCase) {
-			t.Error("error testcase Combining ID result and inputTestCase")
-		}
-	})
+			if !reflect.DeepEqual(activityResult, testCase.expected) {
+				t.Error("error testcase Combining ID result and inputTestCase")
+			}
+		})
+	}
 
-	t.Run("UpdateActivity", func(t *testing.T) {
+	for _, testCase := range testCases {
+		t.Run("UpdateActivity", func(t *testing.T) {
+			if err := activityRepository.Update(context.Background(), &testCase.update); err != nil {
+				t.Error(err)
+			}
 
-		testUpdateActivity := domain.Activity{
-			ID:          111,
-			Name:        "testing_upddate_name",
-			Description: "updated",
-		}
+			resultUpdateActifity, _ := activityRepository.FindByID(context.Background(), testCase.update.ID)
 
-		if err := activityRepository.Update(context.Background(), &testUpdateActivity); err != nil {
-			t.Error(err)
-		}
-
-		resultUpdateActifity, _ := activityRepository.FindByID(context.Background(), testUpdateActivity.ID)
-
-		if !reflect.DeepEqual(testUpdateActivity, resultUpdateActifity) {
-			t.Error("FailTest Update Activity")
-		}
-	})
+			if !reflect.DeepEqual(resultUpdateActifity, testCase.updated) {
+				t.Error("FailTest Update Activity")
+			}
+		})
+	}
 
 	t.Run("GetAllActivity", func(t *testing.T) {
 		results, err := activityRepository.GetAll(context.Background())
