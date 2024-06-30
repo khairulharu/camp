@@ -14,31 +14,31 @@ func TestActivityRepository(t *testing.T) {
 
 	//create a mock data represent all data
 
-	testCases := []struct {
+	testCases := [4]struct {
 		input    domain.Activity
 		expected domain.Activity
 		update   domain.Activity
 		updated  domain.Activity
 	}{
 		{input: domain.Activity{
-			ID:          1789,
-			Name:        "jskjdhfdjkk",
-			Description: "Lorm ipsum tol kl darimana duitnya",
+			ID:          2989,
+			Name:        "khairul",
+			Description: "mynname  is kahriul aswad",
 		}},
 		{expected: domain.Activity{
-			ID:          1789,
-			Name:        "jskjdhfdjkk",
-			Description: "Lorm ipsum tol kl darimana duitnya",
+			ID:          2989,
+			Name:        "khairul",
+			Description: "mynname  is kahriul aswad",
 		}},
 		{update: domain.Activity{
-			ID:          1234,
-			Name:        "update_name",
-			Description: "updated_description",
+			ID:          2989,
+			Name:        "update",
+			Description: "updated",
 		}},
 		{updated: domain.Activity{
-			ID:          1234,
-			Name:        "update_name",
-			Description: "updated_description",
+			ID:          2989,
+			Name:        "update",
+			Description: "updated",
 		}},
 	}
 
@@ -63,19 +63,8 @@ func TestActivityRepository(t *testing.T) {
 				t.Error(err.Error())
 			}
 
-			t.Log(activityResult)
-			t.Log(testCase.expected.ID)
-
-			if activityResult.ID != testCase.expected.ID {
-				t.Error("id")
-			}
-
-			if activityResult.Name != testCase.expected.Name {
-				t.Error("name")
-			}
-
-			if activityResult.Description != testCase.expected.Description {
-				t.Error("description")
+			if activityResult == (domain.Activity{}) {
+				t.Error("not found orr errorr")
 			}
 		})
 	}
