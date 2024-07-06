@@ -52,4 +52,16 @@ func TestAvailabilityRepository(t *testing.T) {
 			t.Error("error")
 		}
 	})
+
+	t.Run("GetAll", func(t *testing.T) {
+		availabities, err := avalaibilityRepository.GetAll(context.Background())
+
+		if err != nil {
+			t.Error(err.Error())
+		}
+
+		if availabities == nil {
+			t.Error("error get all availabilites")
+		}
+	})
 }
