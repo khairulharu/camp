@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewMySqlConnection(config *config.Config) *gorm.DB {
+func NewGormMySqlConnection(config *config.Config) *gorm.DB {
 
 	//"user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Loc
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", config.DB.User, config.DB.Password, config.DB.Host, config.DB.Port, config.DB.Name)

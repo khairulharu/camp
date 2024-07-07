@@ -18,7 +18,7 @@ func main() {
 
 	// errCh := make(chan error)
 
-	dbConnection := database.NewMySqlConnection(config)
+	dbConnection := database.NewGormMySqlConnection(config)
 
 	userRepository := repository.NewUserRepository(dbConnection)
 	reviewRepository := repository.NewReviewRepository(dbConnection)

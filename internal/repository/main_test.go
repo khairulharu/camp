@@ -13,7 +13,7 @@ var dbGorm *gorm.DB
 func TestMain(m *testing.M) {
 	configTest := config.GetConfigTest()
 
-	dbGorm = database.NewMySqlConnection(configTest)
+	dbGorm = database.NewGormMySqlConnection(configTest)
 
 	m.Run()
 }
