@@ -61,7 +61,7 @@ type userRepositoryRare struct {
 	dbRare *sql.DB
 }
 
-func NewUserRepositoryRarem(dbRare *sql.DB) domain.UserRepository {
+func NewUserRepositoryRare(dbRare *sql.DB) domain.UserRepository {
 	return &userRepositoryRare{
 		dbRare: dbRare,
 	}
@@ -92,8 +92,8 @@ func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) erro
 
 	defer sqlCon.Close()
 
-	_, err = sqlCon.ExecContext(ctx, "INSERT INTO users (id, name, email, password, phone_number, address, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-		user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt)
+	_, err = sqlCon.ExecContext(ctx, "INSERT INTO users (id, name, email, password, phone_number, address, created_at, updated_at, deleted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt, user.UpdatedAt, user.DeletedAt)
 	if err != nil {
 		return err
 	}
