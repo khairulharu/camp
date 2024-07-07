@@ -15,7 +15,7 @@ var dbRareTest *sql.DB
 func TestMain(m *testing.M) {
 	configTest := config.GetConfigTest()
 
-	dbGorm = database.NewGormMySqlConnection(configTest)
+	// dbGorm = database.NewGormMySqlConnection(configTest)
 	dbRareTest = database.NewMysqlConnection(configTest)
 
 	m.Run()
