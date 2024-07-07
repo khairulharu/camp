@@ -3,6 +3,7 @@ package repository
 import (
 	"campsite/internal/domain"
 	"context"
+	"database/sql"
 
 	"gorm.io/gorm"
 )
@@ -54,4 +55,39 @@ func (u *userRepository) Insert(ctx context.Context, user *domain.User) error {
 // UpdateUser implements domain.UserRepository.
 func (u *userRepository) Update(ctx context.Context, user *domain.User) error {
 	return u.db.WithContext(ctx).Table("users").Model(&domain.User{}).Where("id = ?", &user.ID).Updates(&user).Error
+}
+
+type userRepositoryRare struct {
+	dbRare *sql.DB
+}
+
+func NewUserRepositoryRarem(dbRare *sql.DB) domain.UserRepository {
+	return &userRepositoryRare{
+		dbRare: dbRare,
+	}
+}
+
+// FindByID implements domain.UserRepository.
+func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain.User, error) {
+	panic("unimplemented")
+}
+
+// FindByUsername implements domain.UserRepository.
+func (u *userRepositoryRare) FindByUsername(ctx context.Context, username string) (domain.User, error) {
+	panic("unimplemented")
+}
+
+// GetAll implements domain.UserRepository.
+func (u *userRepositoryRare) GetAll(ctx context.Context) ([]domain.User, error) {
+	panic("unimplemented")
+}
+
+// Insert implements domain.UserRepository.
+func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) error {
+	panic("unimplemented")
+}
+
+// Update implements domain.UserRepository.
+func (u *userRepositoryRare) Update(ctx context.Context, user *domain.User) error {
+	panic("unimplemented")
 }
