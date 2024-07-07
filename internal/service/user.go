@@ -120,6 +120,7 @@ func (u *userService) SignUp(ctx context.Context, request dto.UserRequest) dto.R
 		Password:    request.Password,
 		PhoneNumber: request.PhoneNumber,
 		Address:     request.Address,
+		CreatedAt:   time.Now(),
 	})
 
 	if err != nil {
