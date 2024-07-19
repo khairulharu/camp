@@ -22,7 +22,7 @@ func TestUserRepositoryRare(t *testing.T) {
 
 	t.Run("InsertRareUser", func(t *testing.T) {
 		if err := userRepositoryRare.Insert(context.Background(), &testInsertCase); err != nil {
-			t.Log(err)
+			t.Error(err)
 		}
 	})
 }
