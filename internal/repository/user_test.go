@@ -9,7 +9,7 @@ import (
 )
 
 func TestUserRepositoryRare(t *testing.T) {
-	userRepositoryRare := repository.NewUserRepositoryRare(dbRareTest)
+	userRepositoryRare := repository.NewUserRepositoryRare(nil, dbGorm)
 
 	testInsertCase := domain.User{
 		Name:        "kahirul",
