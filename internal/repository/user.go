@@ -59,11 +59,13 @@ func (u *userRepository) Update(ctx context.Context, user *domain.User) error {
 
 type userRepositoryRare struct {
 	dbRare *sql.DB
+	dbGorm *gorm.DB
 }
 
-func NewUserRepositoryRare(dbRare *sql.DB) domain.UserRepository {
+func NewUserRepositoryRare(dbRare *sql.DB, dbGorm *gorm.DB) domain.UserRepository {
 	return &userRepositoryRare{
 		dbRare: dbRare,
+		dbGorm: dbGorm,
 	}
 }
 
