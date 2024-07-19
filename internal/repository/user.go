@@ -87,15 +87,9 @@ func (u *userRepositoryRare) GetAll(ctx context.Context) ([]domain.User, error) 
 // Insert implements domain.UserRepository.
 func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) error {
 
-	sqlCon, err := u.dbRare.Conn(ctx)
-	if err != nil {
-		return err
-	}
+	_, err := u.dbGorm.ConnPool.ExecContext(ctx, `INSERT INTO user (id, name, email, password, phone_number, address, created_at, updated_at, deleted_at) 
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt, user.UpdatedAt, user.DeletedAt)
 
-	defer sqlCon.Close()
-
-	_, err = sqlCon.ExecContext(ctx, "INSERT INTO users (id, name, email, password, phone_number, address, created_at, updated_at, deleted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt, user.UpdatedAt, user.DeletedAt)
 	if err != nil {
 		return err
 	}
