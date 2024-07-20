@@ -20,9 +20,22 @@ func TestUserRepositoryRare(t *testing.T) {
 		CreatedAt:   time.Now(),
 	}
 
+	testCaseUserId := 16
+
 	t.Run("InsertRareUser", func(t *testing.T) {
 		if err := userRepositoryRare.Insert(context.Background(), &testInsertCase); err != nil {
 			t.Error(err)
+		}
+	})
+
+	t.Run("FindByID", func(t *testing.T) {
+		userRes, err := userRepositoryRare.FindByID(context.Background(), int64(testCaseUserId))
+		if err != nil {
+			t.Error(err)
+		}
+
+		if userRes == (domain.User{}) {
+			t.Error(userRes)
 		}
 	})
 }

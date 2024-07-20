@@ -4,6 +4,7 @@ import (
 	"campsite/internal/domain"
 	"context"
 	"database/sql"
+	"errors"
 
 	"gorm.io/gorm"
 )
@@ -71,7 +72,23 @@ func NewUserRepositoryRare(dbRare *sql.DB, dbGorm *gorm.DB) domain.UserRepositor
 
 // FindByID implements domain.UserRepository.
 func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain.User, error) {
-	panic("unimplemented")
+	dbRecord, err := u.dbGorm.ConnPool.QueryContext(ctx, `SELECT * FROM users WHERE id = ?`, userID)
+
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	userReq := domain.User{}
+
+	if !dbRecord.Next() {
+		return domain.User{}, errors.New("scan method called but failed")
+	}
+
+	if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt); err != nil {
+		return domain.User{}, err
+	}
+
+	return userReq, nil
 }
 
 // FindByUsername implements domain.UserRepository.
