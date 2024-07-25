@@ -9,6 +9,8 @@ import (
 	log "github.com/sirupsen/logrus"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func NewGormMySqlConnection(config *config.Config) *gorm.DB {
