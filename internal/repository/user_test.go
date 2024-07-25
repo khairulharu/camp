@@ -6,6 +6,8 @@ import (
 	"context"
 	"testing"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 func TestUserRepositoryRare(t *testing.T) {
@@ -18,6 +20,8 @@ func TestUserRepositoryRare(t *testing.T) {
 		PhoneNumber: "0888888888888",
 		Address:     "akksjad, planet mars",
 		CreatedAt:   time.Now(),
+		UpdatedAt:   time.Now(),
+		DeletedAt:   gorm.DeletedAt{},
 	}
 
 	testCaseUserId := 16
@@ -34,7 +38,7 @@ func TestUserRepositoryRare(t *testing.T) {
 			t.Error(err)
 		}
 
-		if userRes == (domain.User{}) {
+		if userRes != (domain.User{}) {
 			t.Error(userRes)
 		}
 	})

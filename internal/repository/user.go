@@ -80,11 +80,10 @@ func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain
 
 	userReq := domain.User{}
 
-	if !dbRecord.Next() {
-		return domain.User{}, errors.New("scan method called but failed")
-	}
-
-	if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt); err != nil {
+	if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
+		if !dbRecord.Next() {
+			return domain.User{}, errors.New("scan method called but failed")
+		}
 		return domain.User{}, err
 	}
 
