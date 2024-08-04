@@ -24,7 +24,7 @@ func TestUserRepositoryRare(t *testing.T) {
 		DeletedAt:   gorm.DeletedAt{},
 	}
 
-	testCaseUserId := 16
+	testCaseUserId := 21
 
 	t.Run("InsertRareUser", func(t *testing.T) {
 		if err := userRepository.Insert(context.Background(), &testInsertCase); err != nil {
@@ -40,6 +40,10 @@ func TestUserRepositoryRare(t *testing.T) {
 
 		if userRes != (domain.User{}) {
 			t.Error(userRes)
+		}
+
+		if userRes.ID != testInsertCase.ID {
+			t.Error("errro query rowww")
 		}
 	})
 }

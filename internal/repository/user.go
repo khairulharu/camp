@@ -78,23 +78,23 @@ func NewUserRepositoryRare(dbRare *sql.DB) domain.UserRepository {
 // FindByID implements domain.UserRepository.
 func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain.User, error) {
 
+	conn, err := u.dbRare.Conn(ctx)
+
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	defer conn.Close()
+
+	rowsRecord := conn.QueryRowContext(ctx, `SELECT * FROM users WHERE id = ?`, userID)
+
+	userReq := domain.User{}
+
+	if err := rowsRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
+		return domain.User{}, err
+	}
+
 	return domain.User{}, nil
-	// dbRecord, err := u.dbGorm.ConnPool.QueryContext(ctx, `SELECT * FROM users WHERE id = ?`, userID)
-
-	// if err != nil {
-	// 	return domain.User{}, err
-	// }
-
-	// userReq := domain.User{}
-
-	// if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
-	// 	if !dbRecord.Next() {
-	// 		return domain.User{}, errors.New("scan method called but failed")
-	// 	}
-	// 	return domain.User{}, err
-	// }
-
-	// return userReq, nil
 }
 
 // FindByUsername implements domain.UserRepository.
