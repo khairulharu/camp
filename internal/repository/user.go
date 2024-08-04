@@ -4,10 +4,17 @@ import (
 	"campsite/internal/domain"
 	"context"
 	"database/sql"
-	"errors"
 
 	"gorm.io/gorm"
 )
+
+func UseUserRepository(isUseOrm bool, dbGorm *gorm.DB, mySql *sql.DB) domain.UserRepository {
+	if isUseOrm {
+		return NewUserRepository(dbGorm)
+	}
+
+	return NewUserRepositoryRare(mySql)
+}
 
 type userRepository struct {
 	db *gorm.DB //change this into *gorm.DB
@@ -60,34 +67,34 @@ func (u *userRepository) Update(ctx context.Context, user *domain.User) error {
 
 type userRepositoryRare struct {
 	dbRare *sql.DB
-	dbGorm *gorm.DB
 }
 
-func NewUserRepositoryRare(dbRare *sql.DB, dbGorm *gorm.DB) domain.UserRepository {
+func NewUserRepositoryRare(dbRare *sql.DB) domain.UserRepository {
 	return &userRepositoryRare{
 		dbRare: dbRare,
-		dbGorm: dbGorm,
 	}
 }
 
 // FindByID implements domain.UserRepository.
 func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain.User, error) {
-	dbRecord, err := u.dbGorm.ConnPool.QueryContext(ctx, `SELECT * FROM users WHERE id = ?`, userID)
 
-	if err != nil {
-		return domain.User{}, err
-	}
+	return domain.User{}, nil
+	// dbRecord, err := u.dbGorm.ConnPool.QueryContext(ctx, `SELECT * FROM users WHERE id = ?`, userID)
 
-	userReq := domain.User{}
+	// if err != nil {
+	// 	return domain.User{}, err
+	// }
 
-	if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
-		if !dbRecord.Next() {
-			return domain.User{}, errors.New("scan method called but failed")
-		}
-		return domain.User{}, err
-	}
+	// userReq := domain.User{}
 
-	return userReq, nil
+	// if err := dbRecord.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
+	// 	if !dbRecord.Next() {
+	// 		return domain.User{}, errors.New("scan method called but failed")
+	// 	}
+	// 	return domain.User{}, err
+	// }
+
+	// return userReq, nil
 }
 
 // FindByUsername implements domain.UserRepository.
@@ -103,8 +110,15 @@ func (u *userRepositoryRare) GetAll(ctx context.Context) ([]domain.User, error) 
 // Insert implements domain.UserRepository.
 func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) error {
 
-	_, err := u.dbGorm.ConnPool.ExecContext(ctx, `INSERT INTO users (id, name, email, password, phone_number, address, created_at) 
-	VALUES (?, ?, ?, ?, ?, ?, ?)`, user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt)
+	conn, err := u.dbRare.Conn(ctx)
+	if err != nil {
+		return err
+	}
+
+	defer conn.Close()
+
+	_, err = conn.ExecContext(ctx, `INSERT INTO users (id, name, email, password, phone_number, address, created_at, updated_at, deleted_at) 
+	VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, user.ID, user.Name, user.Email, user.Password, user.PhoneNumber, user.Address, user.CreatedAt, user.UpdatedAt, user.DeletedAt)
 
 	if err != nil {
 		return err

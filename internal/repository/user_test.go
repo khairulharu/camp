@@ -11,7 +11,7 @@ import (
 )
 
 func TestUserRepositoryRare(t *testing.T) {
-	userRepositoryRare := repository.NewUserRepositoryRare(nil, dbGorm)
+	userRepository := repository.UseUserRepository(false, nil, dbRareTest)
 
 	testInsertCase := domain.User{
 		Name:        "kahirul",
@@ -27,13 +27,13 @@ func TestUserRepositoryRare(t *testing.T) {
 	testCaseUserId := 16
 
 	t.Run("InsertRareUser", func(t *testing.T) {
-		if err := userRepositoryRare.Insert(context.Background(), &testInsertCase); err != nil {
+		if err := userRepository.Insert(context.Background(), &testInsertCase); err != nil {
 			t.Error(err)
 		}
 	})
 
 	t.Run("FindByID", func(t *testing.T) {
-		userRes, err := userRepositoryRare.FindByID(context.Background(), int64(testCaseUserId))
+		userRes, err := userRepository.FindByID(context.Background(), int64(testCaseUserId))
 		if err != nil {
 			t.Error(err)
 		}
