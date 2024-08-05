@@ -18,9 +18,9 @@ func main() {
 
 	// errCh := make(chan error)
 
+	//buat dua buah tipe connection jika menggunakan orm maka return db Grom jika tidak maka return *sql.DB
 	dbConnection := database.NewGormMySqlConnection(config)
-
-	userRepository := repository.NewUserRepository(dbConnection)
+	userRepository := repository.UseUserRepository(config.DB.IsUseOrm, nil, nil)
 	reviewRepository := repository.NewReviewRepository(dbConnection)
 
 	userService := service.NewUser(userRepository)

@@ -12,6 +12,7 @@ type Server struct {
 }
 
 type Database struct {
+	IsUseOrm bool
 	Host     string
 	Port     string
 	User     string

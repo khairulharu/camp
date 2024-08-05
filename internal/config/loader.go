@@ -18,6 +18,7 @@ func Get() *Config {
 			Port: os.Getenv("SRV_PORT"),
 		},
 		DB: Database{
+			IsUseOrm: os.Getenv("IS_USE_ORM") == "true",
 			Host:     os.Getenv("DB_HOST"),
 			Port:     os.Getenv("DB_PORT"),
 			User:     os.Getenv("DB_USER"),
