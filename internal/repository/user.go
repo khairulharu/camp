@@ -115,7 +115,7 @@ func (u *userRepositoryRare) FindByUsername(ctx context.Context, username string
 		return domain.User{}, err
 	}
 
-	return domain.User{}, nil
+	return userReq, nil
 }
 
 // GetAll implements domain.UserRepository.
