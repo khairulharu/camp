@@ -10,17 +10,17 @@ import (
 
 func UseUserRepository(isUseOrm bool, dbGorm *gorm.DB, mySql *sql.DB) domain.UserRepository {
 	if isUseOrm {
-		return NewUserRepository(dbGorm)
+		return NewUserRepositoryGorm(dbGorm)
 	}
 
-	return NewUserRepositoryRare(mySql)
+	return NewUserRepositoryMysql(mySql)
 }
 
 type userRepository struct {
 	db *gorm.DB //change this into *gorm.DB
 }
 
-func NewUserRepository(db *gorm.DB) domain.UserRepository {
+func NewUserRepositoryGorm(db *gorm.DB) domain.UserRepository {
 	return &userRepository{
 		db: db,
 	}
@@ -65,18 +65,18 @@ func (u *userRepository) Update(ctx context.Context, user *domain.User) error {
 	return u.db.WithContext(ctx).Table("users").Model(&domain.User{}).Where("id = ?", &user.ID).Updates(&user).Error
 }
 
-type userRepositoryRare struct {
+type userRepositoryMysql struct {
 	dbRare *sql.DB
 }
 
-func NewUserRepositoryRare(dbRare *sql.DB) domain.UserRepository {
-	return &userRepositoryRare{
+func NewUserRepositoryMysql(dbRare *sql.DB) domain.UserRepository {
+	return &userRepositoryMysql{
 		dbRare: dbRare,
 	}
 }
 
 // FindByID implements domain.UserRepository.
-func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain.User, error) {
+func (u *userRepositoryMysql) FindByID(ctx context.Context, userID int64) (domain.User, error) {
 
 	conn, err := u.dbRare.Conn(ctx)
 
@@ -98,7 +98,7 @@ func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain
 }
 
 // FindByUsername implements domain.UserRepository.
-func (u *userRepositoryRare) FindByUsername(ctx context.Context, username string) (domain.User, error) {
+func (u *userRepositoryMysql) FindByUsername(ctx context.Context, username string) (domain.User, error) {
 	conn, err := u.dbRare.Conn(ctx)
 
 	if err != nil {
@@ -119,12 +119,12 @@ func (u *userRepositoryRare) FindByUsername(ctx context.Context, username string
 }
 
 // GetAll implements domain.UserRepository.
-func (u *userRepositoryRare) GetAll(ctx context.Context) ([]domain.User, error) {
+func (u *userRepositoryMysql) GetAll(ctx context.Context) ([]domain.User, error) {
 	panic("unimplemented")
 }
 
 // Insert implements domain.UserRepository.
-func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) error {
+func (u *userRepositoryMysql) Insert(ctx context.Context, user *domain.User) error {
 
 	conn, err := u.dbRare.Conn(ctx)
 	if err != nil {
@@ -144,6 +144,6 @@ func (u *userRepositoryRare) Insert(ctx context.Context, user *domain.User) erro
 }
 
 // Update implements domain.UserRepository.
-func (u *userRepositoryRare) Update(ctx context.Context, user *domain.User) error {
+func (u *userRepositoryMysql) Update(ctx context.Context, user *domain.User) error {
 	panic("unimplemented")
 }
