@@ -99,7 +99,23 @@ func (u *userRepositoryRare) FindByID(ctx context.Context, userID int64) (domain
 
 // FindByUsername implements domain.UserRepository.
 func (u *userRepositoryRare) FindByUsername(ctx context.Context, username string) (domain.User, error) {
-	panic("unimplemented")
+	conn, err := u.dbRare.Conn(ctx)
+
+	if err != nil {
+		return domain.User{}, err
+	}
+
+	defer conn.Close()
+
+	recordRows := conn.QueryRowContext(ctx, `SELECT * FROM users WHERE name = ?`, username)
+
+	userReq := domain.User{}
+
+	if err := recordRows.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber, &userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt); err != nil {
+		return domain.User{}, err
+	}
+
+	return domain.User{}, nil
 }
 
 // GetAll implements domain.UserRepository.
