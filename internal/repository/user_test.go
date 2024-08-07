@@ -24,8 +24,6 @@ func TestUserRepositoryRare(t *testing.T) {
 		DeletedAt:   gorm.DeletedAt{},
 	}
 
-	var testCaseUserId int64
-
 	t.Run("InsertRareUser", func(t *testing.T) {
 		if err := userRepository.Insert(context.Background(), &testInsertCase); err != nil {
 			t.Error(err)
@@ -34,31 +32,40 @@ func TestUserRepositoryRare(t *testing.T) {
 
 	t.Run("FindByName", func(t *testing.T) {
 
-		resultUser, err := userRepository.FindByUsername(context.Background(), "kahirul")
+		resultUser, err := userRepository.FindByUsername(context.Background(), testInsertCase.Name)
 
 		if err != nil {
 			t.Error(err)
 		}
 
 		if resultUser == (domain.User{}) {
-			t.Error("error qery using username")
+			t.Error("error qery using username or not found")
 		}
 
-		testCaseUserId = resultUser.ID
-	})
+		userRes, err := userRepository.FindByID(context.Background(), resultUser.ID)
 
-	t.Run("FindByID", func(t *testing.T) {
-		userRes, err := userRepository.FindByID(context.Background(), int64(testCaseUserId))
 		if err != nil {
 			t.Error(err)
 		}
 
-		if userRes != (domain.User{}) {
-			t.Error(userRes)
+		if userRes == (domain.User{}) {
+			t.Error("user not found")
 		}
 
-		if userRes.ID != testInsertCase.ID {
+		if userRes.ID != resultUser.ID {
 			t.Error("errro query rowww")
 		}
 	})
+
+	// t.Run("SelectAllUsers", func(t *testing.T) {
+	// 	users, err := userRepository.GetAll(context.Background())
+
+	// 	if err != nil {
+	// 		t.Error(err)
+	// 	}
+
+	// 	if users == nil {
+	// 		t.Error("users not found")
+	// 	}
+	// })
 }
