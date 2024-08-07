@@ -120,13 +120,29 @@ func (u *userRepositoryMysql) FindByUsername(ctx context.Context, username strin
 
 // GetAll implements domain.UserRepository.
 func (u *userRepositoryMysql) GetAll(ctx context.Context) ([]domain.User, error) {
-	panic("unimplemented")
+	conn, err := u.dbRare.Conn(ctx)
+
+	if err != nil {
+		return []domain.User{}, err
+	}
+
+	defer conn.Close()
+
+	recordRows, err := conn.QueryContext(ctx, `SELECT * FROM users`)
+
+	var users []domain.User
+
+	if err := recordRows.Scan(func() {
+
+	}); err != nil {
+		return []domain.User{}, err
+	}
 }
 
 // Insert implements domain.UserRepository.
 func (u *userRepositoryMysql) Insert(ctx context.Context, user *domain.User) error {
-
 	conn, err := u.dbRare.Conn(ctx)
+
 	if err != nil {
 		return err
 	}
