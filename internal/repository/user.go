@@ -4,7 +4,6 @@ import (
 	"campsite/internal/domain"
 	"context"
 	"database/sql"
-	"errors"
 
 	"gorm.io/gorm"
 )
@@ -135,16 +134,25 @@ func (u *userRepositoryMysql) GetAll(ctx context.Context) ([]domain.User, error)
 		return []domain.User{}, err
 	}
 
-	var users []domain.User
+	defer recordRows.Close()
 
-	if err := recordRows.Scan(&users); err != nil {
-		if err == sql.ErrNoRows {
-			return []domain.User{}, errors.New("users not found")
+	var usersReq []domain.User
+
+	for recordRows.Next() {
+		var userReq domain.User
+
+		err := recordRows.Scan(&userReq.ID, &userReq.Name, &userReq.Email, &userReq.Password, &userReq.PhoneNumber,
+			&userReq.Address, &userReq.CreatedAt, &userReq.UpdatedAt, &userReq.DeletedAt)
+
+		if err != nil {
+			return []domain.User{}, err
 		}
-		return []domain.User{}, err
+
+		usersReq = append(usersReq, userReq)
+
 	}
 
-	return users, nil
+	return usersReq, nil
 }
 
 // Insert implements domain.UserRepository.

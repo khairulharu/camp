@@ -57,15 +57,15 @@ func TestUserRepositoryRare(t *testing.T) {
 		}
 	})
 
-	// t.Run("SelectAllUsers", func(t *testing.T) {
-	// 	users, err := userRepository.GetAll(context.Background())
+	t.Run("SelectAllUsers", func(t *testing.T) {
+		users, err := userRepository.GetAll(context.Background())
 
-	// 	if err != nil {
-	// 		t.Error(err)
-	// 	}
+		if err != nil {
+			t.Error(err)
+		}
 
-	// 	if users == nil {
-	// 		t.Error("users not found")
-	// 	}
-	// })
+		if users == nil {
+			t.Error("users not found")
+		}
+	})
 }
